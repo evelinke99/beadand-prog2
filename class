@@ -67,8 +67,8 @@ class HianyzoAdat(Exception):
 class RendszamHiba(Exception):
         pass
 
-
-
+class RendszamFormatumHiba(Exception):
+    pass
 
 
 
