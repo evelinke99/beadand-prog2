@@ -8,10 +8,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import Class as cl
-import re
 
 class Ui_Belepteto_rendszer(object):
     adatok=[]
+    abc = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+    szam = ['0','1','2','3','4','5','6','7','8','9']
 
     def setupUi(self, Belepteto_rendszer):
         Belepteto_rendszer.setObjectName("Belepteto_rendszer")
@@ -110,7 +111,7 @@ class Ui_Belepteto_rendszer(object):
         self.modosit.setText(_translate("Belepteto_rendszer", "Modosít"))
         self.torol.setText(_translate("Belepteto_rendszer", "Töröl"))
         self.torol_2.setText(_translate("Belepteto_rendszer", "Szerkeszt"))
-        self.rendszam.setText(_translate("Belepteto_rendszer","ABC-123"))
+        self.rendszam.setText(_translate("Belepteto_rendszer","ABC123"))
         self.beolvas()
 
 
@@ -133,6 +134,18 @@ class Ui_Belepteto_rendszer(object):
                 raise cl.HianyzoAdat('rendszám')
             if rendszam == 'ABC-123':
                 raise cl.RendszamHiba()
+            if rendszam[0:1] not in self.abc:
+                raise cl.RendszamFormatumHiba()
+            if rendszam[1:2] not in self.abc:
+                raise cl.RendszamFormatumHiba()
+            if rendszam[2:3] not in self.abc:
+                raise cl.RendszamFormatumHiba()
+            if rendszam[3:4] not in self.szam:
+                raise cl.RendszamFormatumHiba()
+            if rendszam[4:5] not in self.szam:
+                raise cl.RendszamFormatumHiba()
+            if rendszam[5:6] not in self.szam:
+                raise cl.RendszamFormatumHiba()
 
             uj_auto=cl.Auto(marka,tipus,uzemanyag,szin,rendszam,engedelyezve)
             if uj_auto not in self.adatok:
@@ -152,11 +165,25 @@ class Ui_Belepteto_rendszer(object):
                 msg.setText('Ez az autó már szerepel a listában!')
                 msg.exec()
 
-        except Exception as ha:
+        except cl.HianyzoAdat as ha:
             msg = QtWidgets.QMessageBox()
             msg.setWindowTitle('Figyelmeztetés!')
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.setText(ha.__str__())
+            msg.exec()
+
+        except cl.RendszamHiba:
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle('Figyelmeztetés')
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("Az alapértelmezett rendszámot írja át!")
+            msg.exec()
+
+        except cl.RendszamFormatumHiba:
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle('Figyelmeztetés')
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("A rendszámot a mintaformátumnak megfelelően adja meg!  (pl: ABC123)")
             msg.exec()
 
 
@@ -245,7 +272,7 @@ class Ui_Belepteto_rendszer(object):
             for i in adatb:
                 if i.count(';') == 5:
                     tmp = i.split(';')
-                    self.adatok.append(cl.Auto(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5][:-1]=='True'))
+                    self.adatok.append(cl.Auto(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5][:-1]))
             adatb.close()
             for j in self.adatok:
                 self.kijelzo.addItem(j.__str__())
