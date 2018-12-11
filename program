@@ -132,7 +132,7 @@ class Ui_Belepteto_rendszer(object):
             if len(rendszam)==0:
                 raise cl.HianyzoAdat('rendszám')
             if rendszam == 'ABC-123':
-                raise cl.Rendszamhiba()
+                raise cl.RendszamHiba()
 
             uj_auto=cl.Auto(marka,tipus,uzemanyag,szin,rendszam,engedelyezve)
             if uj_auto not in self.adatok:
