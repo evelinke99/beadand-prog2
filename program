@@ -241,12 +241,12 @@ class Ui_Belepteto_rendszer(object):
 
     def beolvas(self):
         try:
-            inF = open('adatbazis.txt', 'r')
-            for i in inF:
+            adatb = open('adatbazis.txt', 'r')
+            for i in adatb:
                 if i.count(';') == 5:
                     tmp = i.split(';')
                     self.adatok.append(cl.Auto(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5][:-1]=='True'))
-            inF.close()
+            adatb.close()
             for j in self.adatok:
                 self.kijelzo.addItem(j.__str__())
                 if not j.getEngedely():
