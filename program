@@ -132,8 +132,10 @@ class Ui_Belepteto_rendszer(object):
                 raise cl.HianyzoAdat('szín')
             if len(rendszam)==0:
                 raise cl.HianyzoAdat('rendszám')
-            if rendszam == 'ABC-123':
+            if rendszam == 'ABC123':
                 raise cl.RendszamHiba()
+            if len(rendszam)!=6:
+                raise cl.RendszamFormatumHiba()
             if rendszam[0:1] not in self.abc:
                 raise cl.RendszamFormatumHiba()
             if rendszam[1:2] not in self.abc:
@@ -272,7 +274,7 @@ class Ui_Belepteto_rendszer(object):
             for i in adatb:
                 if i.count(';') == 5:
                     tmp = i.split(';')
-                    self.adatok.append(cl.Auto(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5][:-1]))
+                    self.adatok.append(cl.Auto(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5][:-1]=='True'))
             adatb.close()
             for j in self.adatok:
                 self.kijelzo.addItem(j.__str__())
